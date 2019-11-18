@@ -10,10 +10,10 @@ jobs:
     - uses: MrRamych/gradle-actions/openjdk-12@3.1
       with:
         args: build
-	- name: Upload asset to release
-	  uses: actions-github/upload-to-release@master
-	  env:
-	    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-	  with:
-	    file: './build/distributions/JAVMovieScraper-v0.3.7.zip'
-	    type: 'application/octet-stream'
+    - name: Upload asset to release
+      uses: actions-github/upload-to-release@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        file: './build/distributions/JAVMovieScraper-v0.3.7.zip'
+        type: 'application/octet-stream'
