@@ -93,6 +93,10 @@ spotless {
 	}
 }
 
+checkstyle {
+    configFile file("$configDir/checkstyle.xml")
+}
+
 jacocoTestReport {
 	reports {
 		xml.enabled = true
