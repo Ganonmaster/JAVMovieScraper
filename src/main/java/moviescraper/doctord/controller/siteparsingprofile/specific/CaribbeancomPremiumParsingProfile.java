@@ -106,12 +106,9 @@ public class CaribbeancomPremiumParsingProfile extends SiteParsingProfile implem
 
 	@Override
 	public ReleaseDate scrapeReleaseDate() {
-		for (Element info_line : document.select("div.movie-info > dl")) {
-			Element releaseDateLabel = info_line.select("dt").first();
-			if (releaseDateLabel.text().equals("Release Date:")) {
-				Element releaseDateValue = releaseDateLabel.nextElementSibling();
-				return new ReleaseDate(releaseDateValue.text(), caribbeanReleaseDateFormat);
-			}
+		Element releaseDateValue = document.select(".movie-info li .spec-title:contains(Release Date) ~ .spec-content").first();
+		if (releaseDateValue != null){
+			return new ReleaseDate(releaseDateValue.text(), caribbeanReleaseDateFormat);
 		}
 		return ReleaseDate.BLANK_RELEASEDATE;
 	}
@@ -147,19 +144,17 @@ public class CaribbeancomPremiumParsingProfile extends SiteParsingProfile implem
 
 	@Override
 	public Runtime scrapeRuntime() {
-		for (Element info_line : document.select("div.movie-info > dl")) {
-			Element duration_label = info_line.select("dt").first();
-			if (duration_label.text().equals("Duration:")) {
-				Element duration_value = duration_label.nextElementSibling();
-				String[] durationSplitByTimeUnit = duration_value.text().split(":");
-				if (durationSplitByTimeUnit.length == 3) {
-					int hours = Integer.parseInt(durationSplitByTimeUnit[0]);
-					int minutes = Integer.parseInt(durationSplitByTimeUnit[1]);
-					// we don't care about seconds
+		Element duration_value = document.select(".movie-info li .spec-title:contains(Duration) ~ .spec-content").first();
+		System.out.println(duration_value.text());
+		if (duration_value != null) {
+			String[] durationSplitByTimeUnit = duration_value.text().split(":");
+			if (durationSplitByTimeUnit.length == 3) {
+				int hours = Integer.parseInt(durationSplitByTimeUnit[0]);
+				int minutes = Integer.parseInt(durationSplitByTimeUnit[1]);
+				// we don't care about seconds
 
-					int totalMinutes = (hours * 60) + minutes;
-					return new Runtime(Integer.toString(totalMinutes));
-				}
+				int totalMinutes = (hours * 60) + minutes;
+				return new Runtime(Integer.toString(totalMinutes));
 			}
 		}
 		return Runtime.BLANK_RUNTIME;
@@ -278,7 +273,7 @@ public class CaribbeancomPremiumParsingProfile extends SiteParsingProfile implem
 	@Override
 	public ArrayList<Genre> scrapeGenres() {
 		ArrayList<Genre> genresReturned = new ArrayList<>();
-		for (Element genreElement : document.select(".movie-info-cat").select("dd > a")) {
+		for (Element genreElement : document.select(".movie-info li .spec-title:contains(Tags) ~ .spec-content .spec-item")) {
 			genresReturned.add(new Genre(genreElement.text().trim()));
 		}
 		return genresReturned;
@@ -431,19 +426,13 @@ public class CaribbeancomPremiumParsingProfile extends SiteParsingProfile implem
 	public ArrayList<Actor> scrapeActors() {
 		ArrayList<Actor> actorList = new ArrayList<>();
 
-		Element actorElement = document.select("div.movie-info tr td:contains(Starring:) ~ td a").first();
 		String urlOfCurrentPage = document.location();
 		String actorThumbURL = null;
 		if (getScrapingLanguage() == Language.ENGLISH) {
-			String actors = document.select("div.movie-info").select("dl").first().select("a").text();
-			if (actors.contains(",")) {
-				for (String actor : actors.split(",")) {
-					actorList.add(new Actor(actor, "", null));
-				}
-			} else {
-				if (!actors.isEmpty()) {
-					actorList.add(new Actor(actors, "", null));
-				}
+			Elements actorElements = document.select(".movie-info li .spec-title:contains(Starring:) ~ .spec-content .spec-item");
+			System.out.println(actorElements.text());
+			for (Element actorElement : actorElements) {
+				actorList.add(new Actor(actorElement.text(), "", null));
 			}
 		} else if (getScrapingLanguage() == Language.JAPANESE) {
 			initializeJapaneseDocument();

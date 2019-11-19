@@ -114,7 +114,6 @@ public class Movie {
 
 	public Movie(SiteParsingProfile siteToScrapeFrom) {
 		title = siteToScrapeFrom.scrapeTitle();
-
 		originalTitle = siteToScrapeFrom.scrapeOriginalTitle();
 		sortTitle = siteToScrapeFrom.scrapeSortTitle();
 		set = siteToScrapeFrom.scrapeSet();
@@ -153,7 +152,6 @@ public class Movie {
 		}
 
 		appendIDToStartOfTitle();
-
 	}
 
 	/**

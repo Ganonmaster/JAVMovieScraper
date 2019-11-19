@@ -182,7 +182,7 @@ public abstract class GenericParsingProfileTest {
 		Movie scrapedMovieFromFile = null;
 		URI movieOneURI;
 		try {
-			movieOneURI = new Object().getClass().getResource("/testdata/" + fileName).toURI();
+			movieOneURI = GenericParsingProfileTest.class.getResource("/testdata/" + fileName).toURI();
 			System.out.println("movieOneUri = " + movieOneURI);
 			scrapedMovieFromFile = Movie.createMovieFromNfo(new File(movieOneURI));
 		} catch (URISyntaxException | IOException e) {

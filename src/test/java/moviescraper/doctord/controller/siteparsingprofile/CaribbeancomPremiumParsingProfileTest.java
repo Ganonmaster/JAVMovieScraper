@@ -113,7 +113,7 @@ public class CaribbeancomPremiumParsingProfileTest {
 	@Test
 	public void testScrapeGenre() {
 		ArrayList<Genre> genreList = parser.scrapeGenres();
-		assertEquals("Wrong genre size", 14, genreList.size());
+		assertEquals("Wrong genre size", 16, genreList.size());
 		assertEquals("Wrong genre", "AV Idol", genreList.get(0).getGenre());
 	}
 

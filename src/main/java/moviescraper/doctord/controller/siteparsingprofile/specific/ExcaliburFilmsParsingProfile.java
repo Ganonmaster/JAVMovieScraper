@@ -376,7 +376,7 @@ public class ExcaliburFilmsParsingProfile extends SiteParsingProfile implements 
 		//This selector in particular tends to break when they update their site. 
 		//Unfortunately, they don't use things like ids or classes much which makes it hard to get the right element without resorting to 
 		//hackery like width=600 stuff
-		Elements foundMovies = doc.select(".searchTitle13");
+		Elements foundMovies = doc.select(".searchTitle18");
 		LinkedList<SearchResult> searchList = new LinkedList<>();
 
 		System.out.println("Found" + foundMovies.size());
